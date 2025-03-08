@@ -77,7 +77,7 @@ $pengeluaran = mysqli_query($conn, "SELECT * FROM pengeluaran ORDER BY tanggal D
 
         <h4>Riwayat Pengeluaran</h4>
         <table class="table">
-    <thead>
+    <thead class="table-light">
         <tr>
             <th>Tanggal</th>
             <th>Keterangan</th>

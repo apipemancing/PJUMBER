@@ -48,40 +48,62 @@ if (isset($_POST['tambah'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-4">
-        <h3>Edit Menu</h3>
-        
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nama Menu</th>
-                    <th>Porsi</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_assoc($menu_query)) { ?>
-                <tr>
-                    <form action="" method="POST">
-                        <td>
-                            <input type="text" name="nama_menu" class="form-control" value="<?php echo $row['nama_menu']; ?>" required>
-                        </td>
-                        <td>
-                            <input type="number" name="porsi" class="form-control" value="<?php echo $row['porsi']; ?>" required>
-                        </td>
-                        <td>
-                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                            <button type="submit" name="update" class="btn btn-primary btn-sm">Simpan</button>
-                            <button type="submit" name="hapus" class="btn btn-danger btn-sm" onclick="return confirm('Hapus menu ini?')">Hapus</button>
-                        </td>
-                    </form>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.php">Jumat Beramal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pengeluaran.php">Pengeluaran</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container -->
+    <div class="container mt-4">
+        <h3 class="text-center">Edit Menu</h3>
+        
+        <!-- Tabel Responsif -->
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nama Menu</th>
+                        <th>Porsi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($menu_query)) { ?>
+                    <tr>
+                        <form action="" method="POST">
+                            <td>
+                                <input type="text" name="nama_menu" class="form-control" value="<?php echo $row['nama_menu']; ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="porsi" class="form-control" value="<?php echo $row['porsi']; ?>" required>
+                            </td>
+                            <td>
+                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                <button type="submit" name="update" class="btn btn-primary btn-sm">Simpan</button>
+                                <button type="submit" name="hapus" class="btn btn-danger btn-sm" onclick="return confirm('Hapus menu ini?')">Hapus</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Form Tambah Menu Baru -->
         <h4 class="mt-4">Tambah Menu Baru</h4>
-        <form action="" method="POST" class="row">
+        <form action="" method="POST" class="row g-2">
             <div class="col-md-5">
                 <input type="text" name="nama_menu" class="form-control" placeholder="Nama Menu" required>
             </div>
@@ -89,11 +111,13 @@ if (isset($_POST['tambah'])) {
                 <input type="number" name="porsi" class="form-control" placeholder="Porsi" required>
             </div>
             <div class="col-md-3">
-                <button type="submit" name="tambah" class="btn btn-success">Tambahkan</button>
+                <button type="submit" name="tambah" class="btn btn-success w-100">Tambahkan</button>
             </div>
         </form>
 
-        <a href="dashboard.php" class="btn btn-primary mt-4">Kembali ke Dashboard</a>
+        <a href="dashboard.php" class="btn btn-primary mt-4 w-100">Kembali ke Dashboard</a>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@ $rowSaldo = mysqli_fetch_assoc($resultSaldo);
 $totalSaldo = $rowSaldo['saldo'] ?? 0;
 
 // Pagination
-$limit = 3;
+$limit = 2;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -53,7 +53,7 @@ $totalPages = ceil($totalRow['total'] / $limit);
     <style>
         .navbar a {
             text-decoration: none;
-            color: bla;
+            color: black;
             padding: 10px;
         }
 
@@ -61,43 +61,62 @@ $totalPages = ceil($totalRow['total'] / $limit);
             background-color: #ddd;
             border-radius: 5px;
         }
+
+        /* Tambahan untuk tampilan mobile */
+        @media (max-width: 576px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4>Saldo Total: Rp<?php echo number_format($totalSaldo, 0, ',', '.'); ?></h4>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <h4 class="mb-3 mb-md-0">Saldo Total: Rp<?php echo number_format($totalSaldo, 0, ',', '.'); ?></h4>
             <a href="edit_menu.php" class="btn btn-warning">Edit Menu & Porsi</a>
         </div>
         <hr>
-        <a href="tambah_data_admin1.php" class="btn btn-success">Tambah Data</a>
-        <a href="tambah_kelas.php" class="btn btn-success">Tambah Kelas Baru</a>
+        <div class="d-flex flex-column flex-md-row gap-2">
+            <a href="tambah_data_admin1.php" class="btn btn-success">Tambah Data</a>
+            <a href="tambah_kelas.php" class="btn btn-success">Tambah Kelas Baru</a>
+        </div>
         <hr>
+
         <!-- Form Pencarian -->
         <form method="GET" action="dashboard.php" class="mb-3">
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row g-2">
+                <div class="col-8 col-md-4">
                     <input type="date" name="tanggal" class="form-control" value="<?php echo $search_tanggal; ?>">
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Cari</button>
-                    <a href="dashboard.php" class="btn btn-secondary">Reset</a>
+                <div class="col-4 col-md-2 d-flex gap-1">
+                    <button type="submit" class="btn btn-primary w-100">Cari</button>
+                    <a href="dashboard.php" class="btn btn-secondary w-100">Reset</a>
                 </div>
             </div>
         </form>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Tanggal</th>
-                    <th>Kelas Terbanyak</th>
-                    <th>Kelas Tersedikit</th>
-                    <th>Kelas Tidak Berpartisipasi</th>
-                    <th>Total</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
+
+        <!-- Tambahkan class table-responsive agar tabel bisa di-scroll di layar kecil -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Kelas Terbanyak</th>
+                        <th>Kelas Tersedikit</th>
+                        <th>Kelas Tidak Berpartisipasi</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php while ($row = mysqli_fetch_assoc($rekapan)) {
                     $tanggal = $row['tanggal'];
                     $kelas_terbanyak = mysqli_query($conn, "
@@ -130,23 +149,21 @@ $totalPages = ceil($totalRow['total'] / $limit);
                         WHERE sumbangan_kelas.total_sumbangan = 0
                     ") or die(mysqli_error($conn));
                 ?>
-                    <tr>
-                        <td><?php echo $tanggal; ?></td>
-                        <td><?php echo join("<br>", array_map(fn($t) => $t['kelas'] . " (Rp" . number_format($t['total_sumbangan'], 0, ',', '.') . ")", mysqli_fetch_all($kelas_terbanyak, MYSQLI_ASSOC))) ?: "-"; ?></td>
-                        <td><?php echo join("<br>", array_map(fn($t) => $t['kelas'] . " (Rp" . number_format($t['total_sumbangan'], 0, ',', '.') . ")", mysqli_fetch_all($kelas_tersedikit, MYSQLI_ASSOC))) ?: "-"; ?></td>
-                        <td><?php echo join("<br>", array_map(fn($t) => $t['nama_kelas'], mysqli_fetch_all($kelas_tidak_partisipasi, MYSQLI_ASSOC))) ?: "-"; ?></td>
-                        <td>Rp<?php echo number_format($row['total'], 0, ',', '.'); ?></td>
-                        <td>
-                            <a href="edit_data.php?tanggal=<?php echo $tanggal; ?>" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="hapus_data.php?tanggal=<?php echo $tanggal; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?');">Hapus</a>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-
-        <!-- Pagination -->
-        <nav>
+                        <tr>
+                            <td><?php echo $row['tanggal']; ?></td>
+                            <td><?php echo join("<br>", array_map(fn($t) => $t['kelas'] . " (Rp" . number_format($t['total_sumbangan'], 0, ',', '.') . ")", mysqli_fetch_all($kelas_terbanyak, MYSQLI_ASSOC))) ?: "-"; ?></td>
+                            <td><?php echo join("<br>", array_map(fn($t) => $t['kelas'] . " (Rp" . number_format($t['total_sumbangan'], 0, ',', '.') . ")", mysqli_fetch_all($kelas_tersedikit, MYSQLI_ASSOC))) ?: "-"; ?></td>
+                            <td><?php echo join("<br>", array_map(fn($t) => $t['nama_kelas'], mysqli_fetch_all($kelas_tidak_partisipasi, MYSQLI_ASSOC))) ?: "-"; ?></td>
+                            <td>Rp<?php echo number_format($row['total'], 0, ',', '.'); ?></td>
+                            <td>
+                                <a href="edit_data.php?tanggal=<?php echo $row['tanggal']; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="hapus_data.php?tanggal=<?php echo $row['tanggal']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?');">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php }?>
+                </tbody>
+<!-- Pagination -->
+ <nav>
             <ul class="pagination">
                 <?php if ($page > 1): ?>
                     <li class="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>">Previous</a></li>
@@ -161,8 +178,17 @@ $totalPages = ceil($totalRow['total'] / $limit);
                 <?php endif; ?>
             </ul>
         </nav>
+            </table>
+        </div>
     </div>
-
+    
+    <!-- Navbar Bottom untuk Mobile -->
+    <nav class="navbar fixed-bottom navbar-light bg-light d-md-none">
+        <div class="container-fluid d-flex justify-content-around">
+            <a href="dashboard.php" class="btn btn-outline-primary w-50">Dashboard</a>
+            <a href="pengeluaran.php" class="btn btn-outline-secondary w-50">Pengeluaran</a>
+        </div>
+    </nav>
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <div class="container-fluid d-flex justify-content-around">
             <a href="dashboard.php">Dashboard</a>
@@ -170,5 +196,4 @@ $totalPages = ceil($totalRow['total'] / $limit);
         </div>
     </nav>
 </body>
-
 </html>
