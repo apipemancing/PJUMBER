@@ -17,69 +17,44 @@ if (!$result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengeluaran - Jumat Beramal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .table th {
-            background-color: #343a40;
-            color: white;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Jumat Beramal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard_guest.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pengeluaran.php">Pengeluaran</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-blue-100">
     <!-- Konten -->
-    <div class="container mt-5">
-        <div class="card p-4">
-            <h3 class="text-center">Daftar Pengeluaran Jumat Beramal</h3>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered table-hover">
-                    <thead class="text-center">
+    <div class="container mx-auto mt-6">
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+            <h3 class="text-center text-xl font-semibold text-blue-900">Daftar Pengeluaran Jumat Beramal</h3>
+            <div class="overflow-x-auto mt-4">
+                <table class="w-full border border-gray-300 rounded-lg">
+                    <thead class="bg-blue-400 text-white">
                         <tr>
-                            <th>Tanggal</th>
-                            <th>Keterangan</th>
-                            <th>Jumlah</th>
+                            <th class="py-2 px-4">Tanggal</th>
+                            <th class="py-2 px-4">Keterangan</th>
+                            <th class="py-2 px-4">Pengeluaran</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-blue-100">
                         <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                            <tr>
-                                <td><?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
-                                <td><?php echo htmlspecialchars($row['keterangan']); ?></td>
-                                <td class="text-end">Rp<?php echo number_format($row['jumlah'], 0, ',', '.'); ?></td>
+                            <tr class="border-b border-gray-300 text-center">
+                                <td class="py-2 px-4"><?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
+                                <td class="py-2 px-4"><?php echo htmlspecialchars($row['keterangan']); ?></td>
+                                <td class="py-2 px-4 text-right font-semibold text-red-600">Rp<?php echo number_format($row['jumlah'], 0, ',', '.'); ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div>
             <div class="text-center mt-3">
-                <a href="dashboard_guest.php" class="btn btn-secondary">Kembali</a>
-            </div>
+        <a href="dashboard_guest.php" class="inline-flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow-md">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Kembali
+    </a>
         </div>
     </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 </html>

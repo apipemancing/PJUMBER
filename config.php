@@ -10,4 +10,8 @@ $conn = mysqli_connect($host, $user, $pass, $dbname);
 if (!$conn) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
+
+// Debug untuk memastikan koneksi berhasil
+// Hapus ini setelah memastikan koneksi tidak error
+// echo "Koneksi berhasil"; 
 ?>

@@ -13,73 +13,47 @@ $result = mysqli_query($conn, $query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lihat Menu - Jumat Beramal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .table th {
-            background-color: #343a40;
-            color: white;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Jumat Beramal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard_guest.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pengeluaran.php">Pengeluaran</a></li>
-                </ul>
-            </div>
+
+<!-- Konten -->
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-center text-2xl font-bold text-blue-600 mb-4">📋 Lihat Menu Jumat Beramal</h3>
+        
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="🔍 Cari menu...">
         </div>
-    </nav>
 
-    <!-- Konten -->
-    <div class="container mt-5">
-        <div class="card p-4">
-            <h3 class="text-center">Lihat Menu Jumat Beramal</h3>
-            <div class="text-center">
-                <a href="dashboard_guest.php" class="btn btn-secondary mb-3">Kembali ke Dashboard</a>
-            </div>
-
-            <input type="text" id="search" class="form-control mb-3" placeholder="Cari menu...">
-
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>Nama Menu</th>
-                            <th>Porsi</th>
+        <!-- Tabel -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border border-gray-300 text-sm">
+                <thead class="bg-blue-600 text-white text-center">
+                    <tr>
+                        <th class="px-4 py-3">🍽️ Nama Menu</th>
+                        <th class="px-4 py-3"> Porsi</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable" class="text-center divide-y divide-gray-200">
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                        <tr class="hover:bg-blue-50 transition">
+                            <td class="px-4 py-2"><?php echo $row['nama_menu']; ?></td>
+                            <td class="px-4 py-2 text-right"><?php echo number_format($row['porsi'], 0, ',', '.'); ?> Porsi</td>
                         </tr>
-                    </thead>
-                    <tbody id="dataTable">
-                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                            <tr>
-                                <td><?php echo $row['nama_menu']; ?></td>
-                                <td class="text-end"><?php echo number_format($row['porsi'], 0, ',', '.'); ?> Porsi</td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
+            <!-- Tombol Kembali -->
+    <a href="dashboard_guest.php" class="inline-flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded shadow-md">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Kembali
+    </a>
+
     </div>
+</div>
 
     <script>
         document.getElementById('search').addEventListener('input', function () {
@@ -92,5 +66,10 @@ $result = mysqli_query($conn, $query);
             });
         });
     </script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
 </body>
 </html>

@@ -21,62 +21,63 @@ if (isset($_GET['tanggal'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Data</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Jumat Beramal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pengeluaran.php">Pengeluaran</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="bg-gray-100">
 
     <!-- Container -->
-    <div class="container mt-4">
-        <h4 class="text-center">Edit Data Jumat Beramal - <?php echo $tanggal; ?></h4>
+    <div class="container mx-auto mt-6 p-4 bg-white shadow-lg rounded-lg">
+        <h4 class="text-center text-xl font-semibold text-gray-700">Edit Data Jumat Beramal - <?php echo $tanggal; ?></h4>
 
-        <form action="update_data.php" method="POST">
+        <form action="update_data.php" method="POST" class="mt-4">
             <input type="hidden" name="tanggal" value="<?php echo $tanggal; ?>">
 
-            <!-- Tabel Responsif -->
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Kelas</th>
-                            <th>Jumlah Sumbangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                            <tr>
-                                <td><?php echo $row['kelas']; ?></td>
-                                <td>
-                                    <input type="number" name="sumbangan[<?php echo $row['kelas']; ?>]" 
-                                           value="<?php echo $row['jumlah']; ?>" 
-                                           class="form-control text-center">
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
+<!-- Tabel -->
+<div class="overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-300">
+        <thead class="bg-blue-200 text-gray-800">
+            <tr>
+                <th class="border border-gray-300 p-2">Kelas</th>
+                <th class="border border-gray-300 p-2">Jumlah Sumbangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                <tr class="bg-white">
+                    <td class="border border-gray-300 p-2"><?php echo $row['kelas']; ?></td>
+                    <td class="border border-gray-300 p-2 flex items-center gap-2">
+                        <span class="text-gray-700">Rp</span>
+                        <input type="text" 
+                               name="sumbangan[<?php echo $row['kelas']; ?>]" 
+                               value="<?php echo number_format($row['jumlah'], 0, ',', '.'); ?>" 
+                               class="rupiah-input w-full px-2 py-1 border border-gray-300 rounded-md text-right">
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
 
-            <!-- Tombol Simpan -->
-            <button type="submit" class="btn btn-success w-100 mt-3">Simpan Perubahan</button>
-        </form>
-    </div>
+<!-- Tombol Simpan & Kembali -->
+<div class="flex justify-between gap-2 mt-4">
+    <a href="dashboard.php" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md flex items-center gap-1">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
+    </a>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full flex justify-center items-center gap-1">
+        Simpan Perubahan <i data-lucide="save" class="w-4 h-4"></i>
+    </button>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            document.getElementById('menu').classList.toggle('hidden');
+        });
+    </script>
+    <!-- Lucide Icon Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
 </body>
 </html>

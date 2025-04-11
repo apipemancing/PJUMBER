@@ -75,7 +75,7 @@ $data = mysqli_query($conn, "SELECT * FROM jumat_beramal WHERE tanggal='$tanggal
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Data - Jumat Beramal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .scrollable-table {
             max-height: 300px;
@@ -96,7 +96,7 @@ $data = mysqli_query($conn, "SELECT * FROM jumat_beramal WHERE tanggal='$tanggal
                         <td>${item.kelas}</td>
                         <td>Rp ${parseInt(item.jumlah).toLocaleString('id-ID')}</td>
                         <td>${item.anonim ? 'Ya' : 'Tidak'}</td>
-                        <td><button class="btn btn-danger btn-sm" onclick="hapusKelas(${index})">Hapus</button></td>
+                        <td><button class="bg-red-500 text-white px-2 py-1 rounded" onclick="hapusKelas(${index})">Hapus</button></td>
                     `;
                 });
                 updateDatalist();
@@ -142,50 +142,69 @@ $data = mysqli_query($conn, "SELECT * FROM jumat_beramal WHERE tanggal='$tanggal
         });
     </script>
 </head>
-<body>
-    <div class="container mt-4">
-        <h3 class="text-center">Tambah Data - <?php echo $tanggal; ?></h3>
-        <form action="" method="POST" class="row g-2">
-            <div class="col-md-5">
-                <input type="text" id="kelasInput" name="kelas" class="form-control" list="kelasList" placeholder="Ketik Nama Kelas" required>
-                <datalist id="kelasList">
-                    <?php foreach ($kelas_list as $kelas) { ?>
-                        <option value="<?php echo htmlspecialchars($kelas); ?>"></option>
-                    <?php } ?>
-                </datalist>
+</head>
+<body class="bg-gray-100 p-4 font-sans">
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h3 class="text-center text-2xl font-bold text-blue-600 flex items-center justify-center gap-2">
+            <i data-lucide="plus-circle" class="w-6 h-6 text-blue-600"></i>
+            Tambah Data - <?php echo $tanggal; ?>
+        </h3>
+
+        <!-- Form Tambah -->
+        <form action="" method="POST" class="flex gap-2 mt-6 items-center">
+            <div class="flex items-center gap-1 w-1/3">
+                <i data-lucide="users" class="w-4 h-4 text-gray-600"></i>
+                <input type="text" id="kelasInput" class="border border-gray-300 p-2 w-full rounded" list="kelasList" placeholder="Nama Kelas" required>
+                <datalist id="kelasList"></datalist>
             </div>
-            <div class="col-md-4">
-                <input type="number" id="jumlahInput" name="jumlah" class="form-control" placeholder="Jumlah Sumbangan" required>
+            <div class="flex items-center gap-1 w-1/3">
+                <i data-lucide="coins" class="w-4 h-4 text-gray-600"></i>
+                <input type="number" id="jumlahInput" class="border border-gray-300 p-2 w-full rounded" placeholder="Jumlah Sumbangan" required>
             </div>
-            <div class="col-md-2">
-                <input type="checkbox" id="anonimInput"> Anonim
-            </div>
-            <div class="col-md-2">
-                <button id="tambahKelas" class="btn btn-success w-100">Tambahkan</button>
-            </div>
+            <label class="flex items-center gap-1 text-sm text-gray-700">
+                <input type="checkbox" id="anonimInput" class="accent-blue-500"> Anonim
+            </label>
+            <button id="tambahKelas" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-1">
+                <i data-lucide="plus" class="w-4 h-4"></i> Tambah
+            </button>
         </form>
 
-        <h4 class="mt-4">Data Kelas yang Ditambahkan:</h4>
-        <div class="scrollable-table">
-            <table class="table table-bordered mt-2 table-responsive">
-                <thead class="table-light">
-                    <tr>
-                        <th>Kelas</th>
-                        <th>Jumlah Sumbangan</th>
-                        <th>Anonim</th>
-                        <th>Aksi</th>
+        <!-- Tabel Data Kelas -->
+        <h4 class="mt-6 text-lg font-semibold text-gray-700 flex items-center gap-2">
+            <i data-lucide="table" class="w-5 h-5 text-gray-500"></i> Data Kelas yang Ditambahkan:
+        </h4>
+        <div class="scrollable-table border border-gray-300 rounded p-2 mt-2 bg-gray-50">
+            <table class="w-full border-collapse text-sm">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="p-2 border">Kelas</th>
+                        <th class="p-2 border">Jumlah</th>
+                        <th class="p-2 border">Anonim</th>
+                        <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="kelasTable"></tbody>
+                <tbody id="kelasTable" class="text-center text-gray-700"></tbody>
             </table>
         </div>
 
-        <form id="dataForm" action="" method="POST">
+        <!-- Tombol Simpan -->
+        <form id="dataForm" action="" method="POST" class="mt-6">
             <input type="hidden" name="data_json" id="data_json">
-            <button type="submit" name="simpan" class="btn btn-primary w-100 mt-3">Simpan</button>
+            <button type="submit" name="simpan" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded w-full flex items-center justify-center gap-2 font-semibold">
+                <i data-lucide="save" class="w-5 h-5"></i> Simpan Data
+            </button>
         </form>
+        <!-- Tombol Kembali -->
+<a href="dashboard.php" class="mt-6 inline-flex items-center justify-center gap-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+    <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard
+</a>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lucide Icon Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

@@ -45,79 +45,68 @@ if (isset($_POST['tambah'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Jumat Beramal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pengeluaran.php">Pengeluaran</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Container -->
-    <div class="container mt-4">
-        <h3 class="text-center">Edit Menu</h3>
+<body class="bg-blue-50">
+        <div class="container mx-auto p-6">
+        <h3 class="text-center text-xl font-bold text-blue-900 mb-4">Edit Menu</h3>
         
-        <!-- Tabel Responsif -->
-        <div class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th>Nama Menu</th>
-                        <th>Porsi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($menu_query)) { ?>
-                    <tr>
-                        <form action="" method="POST">
-                            <td>
-                                <input type="text" name="nama_menu" class="form-control" value="<?php echo $row['nama_menu']; ?>" required>
-                            </td>
-                            <td>
-                                <input type="number" name="porsi" class="form-control" value="<?php echo $row['porsi']; ?>" required>
-                            </td>
-                            <td>
-                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                <button type="submit" name="update" class="btn btn-primary btn-sm">Simpan</button>
-                                <button type="submit" name="hapus" class="btn btn-danger btn-sm" onclick="return confirm('Hapus menu ini?')">Hapus</button>
-                            </td>
-                        </form>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
+<!-- Tambahkan di <head> jika belum -->
+<script src="https://unpkg.com/lucide@latest"></script>
 
-        <!-- Form Tambah Menu Baru -->
-        <h4 class="mt-4">Tambah Menu Baru</h4>
-        <form action="" method="POST" class="row g-2">
-            <div class="col-md-5">
-                <input type="text" name="nama_menu" class="form-control" placeholder="Nama Menu" required>
-            </div>
-            <div class="col-md-4">
-                <input type="number" name="porsi" class="form-control" placeholder="Porsi" required>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" name="tambah" class="btn btn-success w-100">Tambahkan</button>
-            </div>
-        </form>
+<!-- Tabel -->
+<div class="overflow-x-auto">
+    <table class="w-full border rounded-lg shadow-md bg-white">
+        <thead class="bg-blue-300 text-blue-900">
+            <tr>
+                <th class="p-2">Nama Menu</th>
+                <th class="p-2">Porsi</th>
+                <th class="p-2">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <?php while ($row = mysqli_fetch_assoc($menu_query)) { ?>
+            <tr class="border-t">
+                <form action="" method="POST">
+                    <td class="p-2">
+                        <input type="text" name="nama_menu" class="border p-1 rounded w-full" value="<?php echo $row['nama_menu']; ?>" required>
+                    </td>
+                    <td class="p-2">
+                        <input type="number" name="porsi" class="border p-1 rounded w-full" value="<?php echo $row['porsi']; ?>" required>
+                    </td>
+                    <td class="p-2 flex gap-2 justify-center">
+                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                        <button type="submit" name="hapus" class="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700" onclick="return confirm('Hapus menu ini?')">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> Hapus
+                        </button>
+                    </td>
+                </form>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
 
-        <a href="dashboard.php" class="btn btn-primary mt-4 w-100">Kembali ke Dashboard</a>
-    </div>
+<!-- Form Tambah Menu Baru -->
+<h4 class="mt-6 text-lg font-semibold text-blue-900">
+    <i data-lucide="plus-circle" class="inline w-5 h-5 me-1"></i> Tambah Menu Baru
+</h4>
+<form action="" method="POST" class="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <input type="text" name="nama_menu" class="border p-2 rounded" placeholder="Nama Menu" required>
+    <input type="number" name="porsi" class="border p-2 rounded" placeholder="Porsi" required>
+    <button type="submit" name="tambah" class="flex items-center justify-center gap-1 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+        <i data-lucide="plus" class="w-4 h-4"></i> Tambahkan
+    </button>
+</form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Tombol Kembali -->
+<a href="dashboard.php" class="mt-6 inline-flex items-center justify-center gap-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+    <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard
+</a>
+
+<!-- Aktifkan icon lucide -->
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>
